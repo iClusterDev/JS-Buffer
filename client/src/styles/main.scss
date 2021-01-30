@@ -1,6 +1,19 @@
-$color-text: rgb(14, 14, 14);
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
 
 body {
-  background-color: rgb(230, 230, 230);
-  color: $color-text;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+
+canvas {
+  border: solid 1px white;
 }

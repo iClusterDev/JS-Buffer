@@ -1,3 +1,1 @@
-import HelloWorld from './components/HelloWorld';
-
-HelloWorld.hello();
+console.log('Game!');
