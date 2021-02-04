@@ -2,10 +2,17 @@
  * iClusterDev 2021
  *
  * Display
- * singleton handling the context resize
+ * static handling the context resize
  * based on a constant aspect ratio
  */
-import Context from '../lib/Context';
+
+const createContext = (width, height) => {
+  const canvas = document.createElement('canvas');
+  canvas.height = height;
+  canvas.width = width;
+  document.body.appendChild(canvas);
+  return canvas.getContext('2d');
+};
 
 class Display {
   constructor(config = {}) {
@@ -13,31 +20,45 @@ class Display {
       return Display.instance;
     } else {
       Display.instance = this;
-      const { width = 800, height = 600, maxWidth = 900 } = config;
-      this._context = new Context(width, height);
-      this._maxWidth = maxWidth;
-      this._aspectRatio = height / width;
+      const { width = 800, height = 600, maxWidth = 920 } = config;
+      this.context = createContext(width, height);
+      this.maxWidth = maxWidth;
+      this.aspectRatio = height / width;
       return Display.instance;
     }
   }
 
+  get width() {
+    return this.context.canvas.width;
+  }
+
+  set width(width) {
+    this.context.canvas.width = width;
+  }
+
+  get height() {
+    return this.context.canvas.height;
+  }
+
+  set height(height) {
+    this.context.canvas.height = height;
+  }
+
   resize() {
     const { innerWidth: width, innerHeight: height } = window;
-
-    if (height / width > this._aspectRatio) {
-      this._context.width = width;
-      this._context.height = width * this._aspectRatio;
+    if (height / width > this.aspectRatio) {
+      this.width = width;
+      this.height = width * this.aspectRatio;
     } else {
-      this._context.width = height / this._aspectRatio;
-      this._context.height = height;
+      this.width = height / this.aspectRatio;
+      this.height = height;
+    }
+    if (this.maxWidth && this.width >= this.maxWidth) {
+      this.width = this.maxWidth;
+      this.height = this.maxWidth * this.aspectRatio;
     }
 
-    if (this._maxWidth && this._context.width >= this._maxWidth) {
-      this._context.width = this._maxWidth;
-      this._context.height = this._maxWidth * this._aspectRatio;
-    }
-
-    this._context.instance.imageSmoothingEnabled = false;
+    this.context.imageSmoothingEnabled = false;
   }
 }
 
