@@ -1,35 +1,48 @@
-import utils from '../utils/utils';
+import Utils from './Utils';
 
-/**
- * Context
- * creates a new canvas element as an off/on screen element & its context
- * can clear the canvas
- * can render a buffer on the canvas
- */
-export default class Context {
-  constructor(config = {}) {
-    this._canvas = utils.createCanvas(config);
-    this._context = this._canvas.getContext('2d');
-    this._context.imageSmoothingEnabled = false; // is this line going here???
+class Context {
+  /**
+   * @param {Number} width width in px
+   * @param {Number} height height in px
+   * @param {Boolean} onscreen off/on screen canvas type
+   */
+  constructor(width = 800, height = 600, onscreen = false) {
+    this._context = Utils.createContext(width, height, onscreen);
+    this._context.imageSmoothingEnabled = false; // is this going here?
   }
 
   clear() {
-    this._context.clearRect(0, 0, this.width, this.height);
+    this._context.clearRect(
+      0,
+      0,
+      this._context.canvas.width,
+      this._context.canvas.height
+    );
   }
 
-  render(buffer) {
-    setTimeout(() => {
-      this._context.drawImage(
-        buffer,
-        0,
-        0,
-        buffer.width,
-        buffer.height,
-        0,
-        0,
-        buffer.width,
-        buffer.height
-      );
-    }, 1000);
+  // render(buffer) {
+  //   this._context.drawImage(
+  //     buffer.data,
+  //     buffer.positionX,
+  //     buffer.positionY,
+  //     buffer.width,
+  //     buffer.height
+  //   );
+  render(
+    bufferData,
+    bufferPositionX,
+    bufferPositionY,
+    bufferWidth,
+    bufferHeight
+  ) {
+    this._context.drawImage(
+      buffer.data,
+      buffer.positionX,
+      buffer.positionY,
+      buffer.width,
+      buffer.height
+    );
   }
 }
+
+export default Context;
