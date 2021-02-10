@@ -2,22 +2,13 @@ import Utils from './Utils';
 
 class Context {
   /**
+   * Off/On screen Rendering context 2D
    * @param {Number} width width in px
    * @param {Number} height height in px
    * @param {Boolean} onscreen off/on screen canvas type
    */
   constructor(width = 800, height = 600, onscreen = false) {
     this._context = Utils.createContext(width, height, onscreen);
-  }
-
-  get buffer() {
-    return {
-      data: this._context.canvas,
-      width: this._context.canvas.width,
-      height: this._context.canvas.height,
-      positionX: this._positionX || 0,
-      positionY: this._positionY || 0,
-    };
   }
 
   clear() {
@@ -41,10 +32,27 @@ class Context {
 }
 
 class Buffer extends Context {
-  constructor(width = 800, height = 600, positionX = 0, positionY = 0) {
+  /**
+   * Off screen rendering context 2D
+   * @param {Number} width width in px
+   * @param {Number} height height in px
+   * @param {Number} positionX position x coordinate
+   * @param {Number} positionY position y coordinate
+   */
+  constructor(width = 50, height = 50, positionX = 0, positionY = 0) {
     super(width, height, false);
     this._positionX = positionX;
     this._positionY = positionY;
+  }
+
+  get buffer() {
+    return {
+      data: this._context.canvas,
+      width: this._context.canvas.width,
+      height: this._context.canvas.height,
+      positionX: this._positionX,
+      positionY: this._positionY,
+    };
   }
 }
 

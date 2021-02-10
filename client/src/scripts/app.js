@@ -1,14 +1,28 @@
 // import { StaticActor } from './components/core/Actor';
 import { Buffer, Context } from './components/core/Context';
-// import Engine from './components/core/Engine';
+import Engine from './components/core/Engine';
 // import squareSrc from '../images/square.svg';
 // import circleSrc from '../images/circle.svg';
 // import triangleSrc from '../images/triangle.svg';
 
-const context = new Context(300, 400, true);
+const screen = new Context(800, 600, true);
+const actor = new Buffer(50, 50, 0, 0);
+actor._context.fillStyle = 'green';
+actor._context.fillRect(0, 0, actor.buffer.width, actor.buffer.height);
 
-const buffer1 = new Buffer(50, 50, 100, 200);
-buffer1._context.fillStyle = 'blue';
-buffer1._context.fillRect(0, 0, 50, 50);
+let dx = 2;
+const update = () => {
+  screen.clear();
 
-context.render(buffer1.buffer);
+  actor._positionX -= dx;
+
+  console.log('DEBUG ~ file: app.js ~ line 16 ~ update ~ dx', dx);
+};
+
+const render = () => {
+  screen.render(actor.buffer);
+};
+
+const engine = new Engine(update, render);
+
+// engine.start();

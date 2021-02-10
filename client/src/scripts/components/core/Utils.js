@@ -1,25 +1,32 @@
 class Utils {
+  /**
+   * Utins.createCanvas
+   * To create an off/on screen canvas element
+   * @param {Number} width width in px
+   * @param {Number} height height in px
+   * @param {Boolean} onscreen off/on screen canvas type
+   */
   static createCanvas(width = 800, height = 600, onscreen = false) {
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    if (onscreen) document.body.appendChild(canvas);
-    return canvas;
+    if (onscreen) {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      if (onscreen) document.body.appendChild(canvas);
+      return canvas;
+    } else {
+      return new OffscreenCanvas(width, height);
+    }
   }
 
+  /**
+   * Utils.createContext
+   * To create an off/on screen rendering context
+   * @param {Number} width width in px
+   * @param {Number} height height in px
+   * @param {Boolean} onscreen off/on screen canvas type
+   */
   static createContext(width = 800, height = 600, onscreen = false) {
-    const canvas = this.createCanvas(width, height, onscreen);
-    return canvas.getContext('2d');
-  }
-
-  static outputBuffer(data, width, height, positionX, positionY) {
-    return {
-      data,
-      width,
-      height,
-      positionX,
-      positionY,
-    };
+    return this.createCanvas(width, height, onscreen).getContext('2d');
   }
 }
 
