@@ -6,7 +6,7 @@ class Utils {
    * @param {Number} height height in px
    * @param {Boolean} onscreen off/on screen canvas type
    */
-  static createCanvas(width = 800, height = 600, onscreen = false) {
+  static createCanvas(width = 800, height = 600, onscreen = true) {
     if (onscreen) {
       const canvas = document.createElement('canvas');
       canvas.width = width;
