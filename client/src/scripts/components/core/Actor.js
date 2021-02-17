@@ -12,8 +12,8 @@ class Actor {
       solid = false,
       image = null,
       name = 'actor',
-      color = 'transparent',
       update = null,
+      background = 'transparent',
     } = config;
 
     if (!image) {
@@ -28,20 +28,22 @@ class Actor {
       this._solid = solid;
       this._image = image;
       this._name = name;
-      this._color = color;
       this._update = update;
+      this._background = background;
       this._buffer = new Buffer({
         width: image.width,
         height: image.height,
         onscreen: false,
+        background: background,
       });
 
       this.init();
     }
   }
 
-  get imageData() {
-    return this._buffer.imageData;
+  // getters
+  get buffer() {
+    return this._buffer.buffer; // really buffer.buffer?
   }
 
   get width() {
@@ -60,10 +62,43 @@ class Actor {
     return this._positionY;
   }
 
+  get velocityX() {
+    return this._velocityX;
+  }
+
+  get velocityY() {
+    return this._velocityY;
+  }
+
+  // setters
+  set width(width) {
+    this._buffer.width = width;
+  }
+
+  set height(height) {
+    this._buffer.height = height;
+  }
+
+  set positionX(positionX) {
+    this._positionX = positionX;
+  }
+
+  set positionY(positionY) {
+    this._positionY = positionY;
+  }
+
+  set velocityX(velocityX) {
+    this._velocityX = velocityX;
+  }
+
+  set velocityY(velocityY) {
+    this._velocityY = velocityY;
+  }
+
   init() {
     const context = this._buffer._context;
-    if (this._color !== 'transparent') {
-      context.fillStyle = this._color;
+    if (this._background !== 'transparent') {
+      context.fillStyle = this._background;
       context.fillRect(0, 0, this.width, this.height);
     }
     context.drawImage(this._image, 0, 0, this.width, this.height);
@@ -71,7 +106,7 @@ class Actor {
 
   update(timestep) {
     if (this._update) {
-      this._update();
+      this._update(timestep);
     }
   }
 }

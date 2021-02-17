@@ -6,8 +6,12 @@ class Buffer {
     this._context = Utils.createContext(width, height, onscreen);
   }
 
-  get imageData() {
-    return this._context.getImageData(0, 0, this.width, this.height);
+  get buffer() {
+    return {
+      data: this._context.canvas,
+      width: this._context.canvas.width,
+      height: this._context.canvas.height,
+    };
   }
 
   get width() {
@@ -30,8 +34,14 @@ class Buffer {
     this._context.clearRect(0, 0, this.width, this.height);
   }
 
-  render(imageData, positionX = 0, positionY = 0) {
-    this._context.putImageData(imageData, positionX, positionY);
+  render(buffer, positionX = 0, positionY = 0) {
+    this._context.drawImage(
+      buffer.data,
+      positionX,
+      positionY,
+      buffer.width,
+      buffer.height
+    );
   }
 }
 
