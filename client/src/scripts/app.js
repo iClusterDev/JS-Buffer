@@ -1,8 +1,8 @@
-import Display from './components/core/Display';
-import Engine from './components/core/Engine';
-import Buffer from './components/core/Buffer';
-import Loader from './components/core/Loader';
-import Actor from './components/core/Actor';
+import Display from './components/lib/Display';
+import Engine from './components/lib/Engine';
+import Buffer from './components/lib/Buffer';
+import Loader from './components/lib/Loader';
+import Actor from './components/lib/Actor';
 import src1 from '../images/circle.svg';
 import src2 from '../images/square.svg';
 import src3 from '../images/triangle.svg';
@@ -93,13 +93,13 @@ loader
     const engine = new Engine(
       (timestep) => {
         screen.clear();
-        actor1.update(timestep);
-        actor2.update(timestep);
+        // actor1.update(timestep);
+        // actor2.update(timestep);
         actor3.update(timestep);
       },
       () => {
-        screen.render(actor1.buffer, actor1.positionX, actor1.positionY);
-        screen.render(actor2.buffer, actor2.positionX, actor2.positionY);
+        // screen.render(actor1.buffer, actor1.positionX, actor1.positionY);
+        // screen.render(actor2.buffer, actor2.positionX, actor2.positionY);
         screen.render(actor3.buffer, actor3.positionX, actor3.positionY);
       }
     );

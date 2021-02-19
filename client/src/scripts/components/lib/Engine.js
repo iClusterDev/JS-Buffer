@@ -3,7 +3,8 @@
  *
  * This is a fixed time step game loop.
  * can be used for any game and ensure that the game state is
- * updated at the same time step across different devices.
+ * updated at the same timestep across different devices.
+ * This will ensure a consistent gameplay experience.
  * In case of slow devices, a memory spiral catch is in place
  * to never allow three full frames passing without an update
  */
