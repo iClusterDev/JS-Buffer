@@ -2,7 +2,7 @@ import Utils from './Utils';
 
 class Buffer {
   constructor(config = {}) {
-    const { width = 800, height = 600, onscreen = false } = config;
+    const { width = 800, height = 600 } = config;
     this._context = Utils.createContext(width, height, onscreen);
   }
 

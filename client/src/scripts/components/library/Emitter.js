@@ -1,6 +1,8 @@
 class Emitter {
+  #events;
+
   constructor() {
-    this._events = {};
+    this.#events = {};
   }
 
   /**
@@ -9,8 +11,8 @@ class Emitter {
    * @param {Function} listener
    */
   on(event = '', listener = () => {}) {
-    if (!this._events.hasOwnProperty(event)) this._events[event] = [];
-    return this._events[event].push(listener);
+    if (!this.#events.hasOwnProperty(event)) this.#events[event] = [];
+    return this.#events[event].push(listener);
   }
 
   /**
@@ -19,8 +21,8 @@ class Emitter {
    * @param {Object} data
    */
   emit(event = '', data = {}) {
-    if (!this._events[event]) return [];
-    return this._events[event].forEach((listener) => {
+    if (!this.#events[event]) return [];
+    return this.#events[event].forEach((listener) => {
       listener(data);
     });
   }
@@ -32,9 +34,9 @@ class Emitter {
    * @param {Function} listener
    */
   removeListener(event = '', listener = () => {}) {
-    if (!this._events[event])
+    if (!this.#events[event])
       throw new Error(`Can't remove listener. Event ${event} doesn't exist!`);
-    return (this._events[event] = this._events[event].filter(
+    return (this.#events[event] = this.#events[event].filter(
       (targetListener) => targetListener !== listener
     ));
   }
