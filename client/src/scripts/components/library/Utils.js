@@ -1,6 +1,6 @@
 class Utils {
   /**
-   * Utins.createCanvas
+   * Utils.createCanvas
    * To create an off/on screen canvas element
    * @param {Number} width width in px
    * @param {Number} height height in px

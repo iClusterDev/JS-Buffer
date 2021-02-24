@@ -1,85 +1,62 @@
-import store from '../store';
 import Buffer from './Buffer';
 
+/**
+ * /////////////////////////////////////////////////////
+ * Display.js
+ * /////////////////////////////////////////////////////
+ */
 class Display extends Buffer {
-  /**
-   * Singleton onscreen context
-   * @param {Object} store.state store.state object
-   * @param {Number} store.state.width width of the screen in px
-   * @param {Number} store.state.height height of the screen in px
-   * @param {Number} store.state.maxWidth maximum width extension in px
-   * @param {Boolean} store.state.resizable allow resize to keep a constant aspect ration
-   */
-  constructor() {
-    const {
-      width = 800,
-      height = 600,
-      maxWidth = 900,
-      resizable = true,
-    } = store.state.display;
+  #aspectRatio;
+  #onResize;
+  #maxWidth;
 
-    super({ width, height, onscreen: true });
-    this._aspectRatio = height / width;
-    this._resizable = resizable;
-    this._maxWidth = maxWidth;
-    this.init();
-  }
+  constructor(config = {}) {
+    if (Display.instance) {
+      return Display.instance;
+    } else {
+      const { width = 800, height = 600, onResize = () => {} } = config;
 
-  get aspectRatio() {
-    return this._aspectRatio;
-  }
+      super(width, height, true);
+      this.#aspectRatio = height / width;
+      this.#onResize = onResize;
+      this.#maxWidth = width;
 
-  get resizable() {
-    return this._resizable;
-  }
+      this.init();
+      this.resize();
 
-  get maxWidth() {
-    return this._maxWidth;
+      Display.instance = this;
+      return Display.instance;
+    }
   }
 
   init() {
-    const self = this;
-    self.resize();
-    if (self.resizable) {
-      window.addEventListener('resize', (e) => {
-        e.preventDefault();
-        self.resize();
-      });
-    }
+    window.addEventListener('resize', (e) => {
+      e.preventDefault();
+      this.resize();
+    });
   }
 
   resize() {
-    /**
-     * FIXME
-     * trigger / dispatch only when the size has changed
-     * debounce needed for this?
-     * rescale scene?
-     */
-    if (this.resizable) {
-      const { innerWidth: width, innerHeight: height } = window;
-      let newWidth = 0;
-      let newHeight = 0;
-      if (height / width >= this.aspectRatio) {
-        newWidth = width;
-        newHeight = width * this.aspectRatio;
-      } else {
-        newWidth = height / this.aspectRatio;
-        newHeight = height;
-      }
-
-      if (newWidth >= this.maxWidth) {
-        this.width = this.maxWidth;
-        this.height = this.maxWidth * this.aspectRatio;
-      } else {
-        this.width = newWidth;
-        this.height = newHeight;
-      }
-
-      store.dispatch('setDisplay', {
-        width: this.width,
-        height: this.height,
-      });
+    const { innerWidth: width, innerHeight: height } = window;
+    let newWidth,
+      newHeight = 0;
+    if (height / width >= this.#aspectRatio) {
+      newWidth = width;
+      newHeight = width * this.#aspectRatio;
+    } else {
+      newWidth = height / this.#aspectRatio;
+      newHeight = height;
     }
+
+    if (newWidth >= this.#maxWidth) {
+      this.width = this.#maxWidth;
+      this.height = this.#maxWidth * this.#aspectRatio;
+    } else {
+      this.width = newWidth;
+      this.height = newHeight;
+    }
+
+    this.#onResize(this.width, this.height);
   }
 }
 

@@ -10,23 +10,21 @@ const state = {
   display: {
     width: 800,
     height: 600,
-    maxWidth: 900,
-    resizable: true,
   },
 };
 
 const mutations = {
-  changeDisplay: (state, payload = {}) => {
+  resize: (state, payload = {}) => {
     const { width, height, ...rest } = state.display;
     state.display = { ...payload, ...rest };
   },
 };
 
 const actions = {
-  setDisplay: (context, payload = {}) => {
+  resize: (context, payload = {}) => {
     const { width = null, height = null } = payload;
     if (width && height) {
-      context.commit('changeDisplay', { width, height });
+      context.commit('resize', { width, height });
     }
   },
 };

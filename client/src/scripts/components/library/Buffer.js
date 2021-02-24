@@ -1,41 +1,43 @@
 import Utils from './Utils';
 
+/**
+ * /////////////////////////////////////////////////////
+ * Buffer.js
+ * /////////////////////////////////////////////////////
+ */
 class Buffer {
-  constructor(config = {}) {
-    const { width = 800, height = 600 } = config;
-    this._context = Utils.createContext(width, height, onscreen);
+  #buffer;
+
+  constructor(width, height, onscreen) {
+    this.#buffer = Utils.createContext(width, height, onscreen);
   }
 
   get buffer() {
     return {
-      data: this._context.canvas,
-      width: this._context.canvas.width,
-      height: this._context.canvas.height,
+      data: this.#buffer.canvas,
+      width: this.#buffer.canvas.width,
+      height: this.#buffer.canvas.height,
     };
   }
 
   get width() {
-    return this._context.canvas.width;
+    return this.#buffer.canvas.width;
   }
 
   get height() {
-    return this._context.canvas.height;
+    return this.#buffer.canvas.height;
   }
 
   set width(width) {
-    this._context.canvas.width = width;
+    this.#buffer.canvas.width = width;
   }
 
   set height(height) {
-    this._context.canvas.height = height;
-  }
-
-  clear() {
-    this._context.clearRect(0, 0, this.width, this.height);
+    this.#buffer.canvas.height = height;
   }
 
   render(buffer, positionX = 0, positionY = 0) {
-    this._context.drawImage(
+    this.#buffer.drawImage(
       buffer.data,
       positionX,
       positionY,
